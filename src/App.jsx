@@ -1,13 +1,12 @@
 import { useState } from 'react'
-import './App.css'
-import Helloworld from './components/FormClient/components/Helloworld'
+import FormClientPage from './components/FormClient/pages/FormClientPage'
 
 function App() {
   const [count, setCount] = useState(0)
 
   return (
     <>
-     <Helloworld/>
+     <FormClientPage/>
     </>
   )
 }
