@@ -7,8 +7,8 @@ function App() {
 
   return (
      <>
-     {/* <FormClientPage/>  */}
-      <TableAllPage/> 
+      {/* <FormClientPage/>   */}
+       <TableAllPage/>  
     </>
   )
 }

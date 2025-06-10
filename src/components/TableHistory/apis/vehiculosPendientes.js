@@ -11,7 +11,7 @@ export const getVehiculosPendientes = async () => {
         
         // Realizar petición GET simple - el backend ya filtra automáticamente
         const response = await axios.get(
-            `${API_BASE_URL}/vehiculos/pendientes/`,
+            `${API_BASE_URL}/vehiculos/`,
             { headers }
         )
         
