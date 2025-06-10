@@ -15,9 +15,9 @@ export const login = async () => {
         const token = response.data.access || response.data.token || response.data.access_token
         
         if (!token) {
-            throw new Error('No se recibió el token de autenticación')
+            throw new Error('No logro obtener el token')
         }
-        
+        console.log("este es el token de la peticion")
         return token
     } catch (error) {
         console.error('Error en login:', error)

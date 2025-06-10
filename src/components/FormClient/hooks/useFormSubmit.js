@@ -11,9 +11,9 @@ export const useFormSubmit = () => {
             const formattedData = {
                 vin: data.vin,
                 marca: data.marca,
-                modelo: data.modelo || "No especificado", // Asegurar que existe
-                año: parseInt(data.año), // ✅ Convertir a número
-                placa: data.placas, // ✅ Cambiar "placas" a "placa"
+                modelo: data.modelo, 
+                año: parseInt(data.año),
+                placa: data.placas, 
                 servicio: data.servicio,
                 comentario: data.comentario || "",
                 fecha_registro: data.fecha_registro,
@@ -28,13 +28,13 @@ export const useFormSubmit = () => {
 
             console.log('Enviando datos al backend:', JSON.stringify(formattedData, null, 2))
             
-            // Enviar datos al backend usando el servicio
+            // enviar los datos al back
             const response = await crearVehiculo(formattedData)
             
             console.log('Respuesta del servidor:', response)
             alert('¡Formulario enviado correctamente!')
             
-            // Limpiar el formulario pero mantener la fecha de registro
+            //limpiar el formulario menos la fecha de registro
             reset({
                 fecha_registro: new Date().toISOString().split('T')[0]
             })
