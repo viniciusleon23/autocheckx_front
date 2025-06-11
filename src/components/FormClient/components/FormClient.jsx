@@ -1,7 +1,7 @@
 import React from 'react'
 import { useForm } from 'react-hook-form'
 import { useFormSubmit } from '../hooks/useFormSubmit'
-import fondo from '../img/background.png' // Corregida la sintaxis del import
+import fondo from '../img/background.png'
 
 const FormClient = () => {
     const { 

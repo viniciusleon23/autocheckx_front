@@ -7,7 +7,7 @@ import { getVehiculosPendientes } from '../apis/vehiculosPendientes';
 import ModalHyundai from '../components/ModalHyundai'
 import ModalMazda from '../components/ModalMazda'
 import ModalNissan from '../components/ModalNissan'
-
+import fondo from '../img/servicio.png'
 const TableAll = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -224,7 +224,17 @@ const TableAll = () => {
 
   return (
     <>
-      <Paper sx={{ 
+      <div 
+            className="min-h-screen py-8 px-4"
+            style={{
+                backgroundImage: `url(${fondo})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundRepeat: 'no-repeat',
+                backgroundAttachment: 'fixed'
+            }}
+        >     
+        <Paper sx={{ 
         height: 400, 
         width: '100%',
         overflow: 'hidden',
@@ -257,6 +267,8 @@ const TableAll = () => {
         onClose={handleModalClose}
         vehiculo={selectedVehiculo}
       />
+      </div>
+
     </>
   );
 };
