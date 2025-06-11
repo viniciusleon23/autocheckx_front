@@ -84,7 +84,6 @@ const ModalHyundai = ({ open, onClose, vehiculo }) => {
         estatus: 'Verificado'
       };
       
-      console.log('Datos de inspección Hyundai:', inspeccionData);
 
       await actualizarInspeccion(vehiculo.inspeccion_id, inspeccionData);
       alert('¡Inspección de Hyundai guardada exitosamente!');

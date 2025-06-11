@@ -15,6 +15,7 @@ import {
   MenuItem,
   FormHelperText
 } from '@mui/material';
+import {actualizarInspeccion} from '../apis/insepeccionVehiculo'
 
 const ModalMazda = ({ open, onClose, vehiculo }) => {
   const [formData, setFormData] = useState({
@@ -71,7 +72,7 @@ const ModalMazda = ({ open, onClose, vehiculo }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit =async () => {
     if (validateForm()) {
       // Por ahora solo mostramos los datos en consola
       const inspeccionData = {
@@ -81,11 +82,13 @@ const ModalMazda = ({ open, onClose, vehiculo }) => {
         luces_frontales: formData.luces_frontales,
         luces_posteriores: formData.luces_posteriores,
         carga_bateria: parseInt(formData.carga_bateria),
-        estatus: 'completado'
+        estatus: 'Verificado'
       };
       
       console.log('Datos de inspección Mazda:', inspeccionData);
-      alert('Formulario completado correctamente. Revisa la consola para ver los datos.');
+      
+      await actualizarInspeccion(vehiculo.inspeccion_id, inspeccionData);
+      alert('¡Inspección de Mazda guardada exitosamente!');
       handleClose();
     }
   };
