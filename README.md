@@ -82,6 +82,7 @@ src/
 │       │   ├── ⚛️ ModalHyundai.jsx
 │       │   ├── ⚛️ ModalMazda.jsx
 │       │   ├── ⚛️ ModalNissan.jsx
+            ├── ⚛️ ModalDetallesInspeccion.jsx
 │       │   └── ⚛️ TableAll.jsx
 │       ├── 📂 hooks/
 │       ├── 📂 img/
