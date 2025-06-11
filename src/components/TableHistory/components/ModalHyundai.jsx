@@ -10,6 +10,7 @@ import {
   Typography,
   Grid
 } from '@mui/material';
+import {actualizarInspeccion} from '../apis/insepeccionVehiculo'
 
 const ModalHyundai = ({ open, onClose, vehiculo }) => {
   const [formData, setFormData] = useState({
@@ -67,7 +68,7 @@ const ModalHyundai = ({ open, onClose, vehiculo }) => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = () => {
+  const handleSubmit =async () => {
     if (validateForm()) {
       // Por ahora solo mostramos los datos en consola
       const inspeccionData = {
@@ -80,11 +81,13 @@ const ModalHyundai = ({ open, onClose, vehiculo }) => {
         presion_llanta_dos: parseFloat(formData.presion_llanta_dos),
         presion_llanta_tres: parseFloat(formData.presion_llanta_tres),
         presion_llanta_cuatro: parseFloat(formData.presion_llanta_cuatro),
-        estatus: 'completado'
+        estatus: 'Verificado'
       };
       
       console.log('Datos de inspección Hyundai:', inspeccionData);
-      alert('Formulario completado correctamente. Revisa la consola para ver los datos.');
+
+      await actualizarInspeccion(vehiculo.inspeccion_id, inspeccionData);
+      alert('¡Inspección de Hyundai guardada exitosamente!');
       handleClose();
     }
   };

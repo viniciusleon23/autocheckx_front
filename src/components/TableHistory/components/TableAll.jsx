@@ -4,7 +4,7 @@ import Paper from '@mui/material/Paper';
 import { useState, useEffect } from 'react';
 import { CircularProgress, Box, Alert, Button } from '@mui/material';
 import { getVehiculosPendientes } from '../apis/vehiculosPendientes';
-import ModalHyundai from '../components/ModalHyndai'
+import ModalHyundai from '../components/ModalHyundai'
 import ModalMazda from '../components/ModalMazda'
 import ModalNissan from '../components/ModalNissan'
 
@@ -46,7 +46,7 @@ const TableAll = () => {
     
     // Verificar si la inspección ya está realizada
     const estatusInspeccion = vehiculo.inspeccion_estatus?.toLowerCase();
-    if (estatusInspeccion === 'realizado' || estatusInspeccion === 'completado') {
+    if (estatusInspeccion === 'verificado' || estatusInspeccion === 'Verificado') {
       alert('Esta inspección ya ha sido realizada y no puede modificarse.');
       return;
     }
@@ -243,6 +243,7 @@ const TableAll = () => {
         open={modalHyundaiOpen}
         onClose={handleModalClose}
         vehiculo={selectedVehiculo}
+        onInspeccionActualizada={loadVehiculosPendientes}
       />
       
       <ModalMazda
