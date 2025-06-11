@@ -77,6 +77,7 @@ const ModalNissan = ({ open, onClose, vehiculo }) => {
       await actualizarInspeccion(vehiculo.inspeccion_id, inspeccionData);
       alert("Se realizo la verificacion correctamente")
       handleClose();
+      window.location.reload();
     }
   };
 

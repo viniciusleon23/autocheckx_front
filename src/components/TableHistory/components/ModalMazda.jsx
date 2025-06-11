@@ -90,6 +90,7 @@ const ModalMazda = ({ open, onClose, vehiculo }) => {
       await actualizarInspeccion(vehiculo.inspeccion_id, inspeccionData);
       alert('¡Inspección de Mazda guardada exitosamente!');
       handleClose();
+      window.location.reload();
     }
   };
 

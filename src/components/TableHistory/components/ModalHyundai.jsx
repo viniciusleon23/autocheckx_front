@@ -88,6 +88,7 @@ const ModalHyundai = ({ open, onClose, vehiculo }) => {
       await actualizarInspeccion(vehiculo.inspeccion_id, inspeccionData);
       alert('¡Inspección de Hyundai guardada exitosamente!');
       handleClose();
+      window.location.reload();
     }
   };
 

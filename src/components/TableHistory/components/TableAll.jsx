@@ -93,17 +93,17 @@ const TableAll = () => {
     { 
       field: 'marca', 
       headerName: 'Marca', 
-      width: 130
+      width: 70
     },
     { 
       field: 'modelo', 
       headerName: 'Modelo', 
-      width: 120
+      width: 70
     },
     { 
       field: 'año', 
       headerName: 'Año', 
-      width: 90
+      width: 70
     },
     { 
       field: 'placa', 
@@ -120,15 +120,20 @@ const TableAll = () => {
       headerName: 'Servicio', 
       width: 180
     },
+    {
+      field: 'comentario', 
+      headerName: 'Comentarios del Usuario', 
+      width: 180
+    },
     { 
       field: 'fecha_registro', 
-      headerName: 'Fecha', 
-      width: 130
+      headerName: 'Fecha Registro', 
+      width: 100
     },
     { 
       field: 'inspeccion_estatus', 
       headerName: 'Estatus', 
-      width: 120
+      width: 100
     },
     {
       field: 'acciones',
