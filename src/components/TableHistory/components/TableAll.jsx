@@ -7,16 +7,22 @@ import { getVehiculosPendientes } from '../apis/vehiculosPendientes';
 import ModalHyundai from '../components/ModalHyundai'
 import ModalMazda from '../components/ModalMazda'
 import ModalNissan from '../components/ModalNissan'
+import ModalDetallesInspeccion from '../components/ModalDetallesInspeccion' // ✅ Nuevo modal
 import fondo from '../img/servicio.png'
+
 const TableAll = () => {
   const [rows, setRows] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   
-  // Estados para los modales
+  // Estados para los modales de inspección
   const [modalHyundaiOpen, setModalHyundaiOpen] = useState(false);
   const [modalMazdaOpen, setModalMazdaOpen] = useState(false);
   const [modalNissanOpen, setModalNissanOpen] = useState(false);
+  
+  // ✅ Estado para el modal de detalles
+  const [modalDetallesOpen, setModalDetallesOpen] = useState(false);
+  
   const [selectedVehiculo, setSelectedVehiculo] = useState(null);
 
   const loadVehiculosPendientes = async () => {
@@ -24,10 +30,12 @@ const TableAll = () => {
       setLoading(true);
       setError(null);
       
+      console.log('🔄 Actualizando lista de vehículos pendientes...');
       const response = await getVehiculosPendientes();
       
       const vehiculos = response.results || response;
       setRows(vehiculos);
+      console.log('✅ Lista actualizada correctamente');
       
     } catch (err) {
       console.error('Error al cargar vehículos pendientes:', err);
@@ -44,34 +52,31 @@ const TableAll = () => {
   const handleVerificar = (vehiculo) => {
     console.log('Verificando vehículo:', vehiculo);
     
-    // Verificar si la inspección ya está realizada
     const estatusInspeccion = vehiculo.inspeccion_estatus?.toLowerCase();
-    if (estatusInspeccion === 'verificado' || estatusInspeccion === 'Verificado') {
-      alert('Esta inspección ya ha sido realizada y no puede modificarse.');
+    const marca = vehiculo.marca?.toLowerCase();
+    
+    // ✅ Si la inspección ya está verificada, mostrar detalles
+    if (estatusInspeccion === 'verificado' || estatusInspeccion === 'realizado') {
+      setSelectedVehiculo(vehiculo);
+      setModalDetallesOpen(true);
       return;
     }
     
-    const marca = vehiculo.marca?.toLowerCase();
-    
-    // Verificar si la marca es Hyundai
+    // Si no está verificada, abrir modal de inspección según la marca
     if (marca === 'hyundai') {
       setSelectedVehiculo(vehiculo);
       setModalHyundaiOpen(true);
     } 
-    // Verificar si la marca es Mazda
     else if (marca === 'mazda') {
       setSelectedVehiculo(vehiculo);
       setModalMazdaOpen(true);
     } 
-    // Verificar si la marca es Nissan
     else if (marca === 'nissan') {
       setSelectedVehiculo(vehiculo);
       setModalNissanOpen(true);
     } 
-    // Para otras marcas, mostrar el alert como antes
     else {
       alert(`Verificando vehículo ID: ${vehiculo.id} - ${vehiculo.marca} ${vehiculo.modelo}`);
-      // Aquí puedes agregar lógica para otras marcas
     }
   };
 
@@ -79,7 +84,14 @@ const TableAll = () => {
     setModalHyundaiOpen(false);
     setModalMazdaOpen(false);
     setModalNissanOpen(false);
+    setModalDetallesOpen(false); // ✅ Cerrar modal de detalles
     setSelectedVehiculo(null);
+  };
+
+  // Función para manejar la actualización después de guardar una inspección
+  const handleInspeccionActualizada = async () => {
+    console.log('🔄 Inspección guardada, actualizando tabla...');
+    await loadVehiculosPendientes();
   };
 
   const columns = [
@@ -93,17 +105,17 @@ const TableAll = () => {
     { 
       field: 'marca', 
       headerName: 'Marca', 
-      width: 70
+      width: 130
     },
     { 
       field: 'modelo', 
       headerName: 'Modelo', 
-      width: 70
+      width: 120
     },
     { 
       field: 'año', 
       headerName: 'Año', 
-      width: 70
+      width: 90
     },
     { 
       field: 'placa', 
@@ -120,40 +132,35 @@ const TableAll = () => {
       headerName: 'Servicio', 
       width: 180
     },
-    {
-      field: 'comentario', 
-      headerName: 'Comentarios del Usuario', 
-      width: 180
-    },
     { 
       field: 'fecha_registro', 
-      headerName: 'Fecha Registro', 
-      width: 100
+      headerName: 'Fecha', 
+      width: 130
     },
     { 
       field: 'inspeccion_estatus', 
       headerName: 'Estatus', 
-      width: 100
+      width: 120
     },
     {
       field: 'acciones',
       headerName: 'Acción',
-      width: 120,
+      width: 140,
       sortable: false,
       renderCell: (params) => {
         const marca = params.row.marca?.toLowerCase();
         const estatusInspeccion = params.row.inspeccion_estatus?.toLowerCase();
-        const yaRealizada = estatusInspeccion === 'Verificado' || estatusInspeccion === 'verificado';
+        const yaRealizada = estatusInspeccion === 'verificado' || estatusInspeccion === 'realizado';
         
         let buttonColor = 'primary';
         let buttonText = 'Verificar';
-        let disabled = false;
+        let variant = 'contained';
         
-        // Si ya está realizada la inspección
+        // ✅ Si ya está realizada la inspección
         if (yaRealizada) {
-          buttonColor = 'inherit';
-          buttonText = 'Completada';
-          disabled = true;
+          buttonColor = 'info';
+          buttonText = 'Ver Detalles';
+          variant = 'outlined';
         } 
         // Si no está realizada, asignar colores por marca
         else if (marca === 'hyundai') {
@@ -169,14 +176,13 @@ const TableAll = () => {
         
         return (
           <Button
-            variant={yaRealizada ? "outlined" : "contained"}
+            variant={variant}
             color={buttonColor}
             size="small"
-            disabled={disabled}
             onClick={() => handleVerificar(params.row)}
             sx={{
-              opacity: yaRealizada ? 0.6 : 1,
-              cursor: yaRealizada ? 'not-allowed' : 'pointer'
+              minWidth: '110px', // Para que todos los botones tengan el mismo ancho
+              fontSize: '0.75rem'
             }}
           >
             {buttonText}
@@ -230,50 +236,58 @@ const TableAll = () => {
   return (
     <>
       <div 
-            className="min-h-screen py-8 px-4"
-            style={{
-                backgroundImage: `url(${fondo})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                backgroundAttachment: 'fixed'
-            }}
-        >     
+        className="min-h-screen py-8 px-4"
+        style={{
+          backgroundImage: `url(${fondo})`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed'
+        }}
+      >     
         <Paper sx={{ 
-        height: 400, 
-        width: '100%',
-        overflow: 'hidden',
-      }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          initialState={{ pagination: { paginationModel } }}
-          pageSizeOptions={[5, 10]}
-          sx={{ border: 0 }}
+          height: 400, 
+          width: '100%',
+          overflow: 'hidden',
+        }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            initialState={{ pagination: { paginationModel } }}
+            pageSizeOptions={[5, 10]}
+            sx={{ border: 0 }}
+          />
+        </Paper>
+
+        {/* Modales de inspección */}
+        <ModalHyundai
+          open={modalHyundaiOpen}
+          onClose={handleModalClose}
+          vehiculo={selectedVehiculo}
+          onInspeccionActualizada={handleInspeccionActualizada}
         />
-      </Paper>
+        
+        <ModalMazda
+          open={modalMazdaOpen}
+          onClose={handleModalClose}
+          vehiculo={selectedVehiculo}
+          onInspeccionActualizada={handleInspeccionActualizada}
+        />
+        
+        <ModalNissan
+          open={modalNissanOpen}
+          onClose={handleModalClose}
+          vehiculo={selectedVehiculo}
+          onInspeccionActualizada={handleInspeccionActualizada}
+        />
 
-      {/* Modales de inspección */}
-      <ModalHyundai
-        open={modalHyundaiOpen}
-        onClose={handleModalClose}
-        vehiculo={selectedVehiculo}
-        onInspeccionActualizada={loadVehiculosPendientes}
-      />
-      
-      <ModalMazda
-        open={modalMazdaOpen}
-        onClose={handleModalClose}
-        vehiculo={selectedVehiculo}
-      />
-      
-      <ModalNissan
-        open={modalNissanOpen}
-        onClose={handleModalClose}
-        vehiculo={selectedVehiculo}
-      />
+        {/* ✅ Modal de detalles para inspecciones verificadas */}
+        <ModalDetallesInspeccion
+          open={modalDetallesOpen}
+          onClose={handleModalClose}
+          vehiculo={selectedVehiculo}
+        />
       </div>
-
     </>
   );
 };

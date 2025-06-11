@@ -70,7 +70,6 @@ const ModalHyundai = ({ open, onClose, vehiculo }) => {
 
   const handleSubmit =async () => {
     if (validateForm()) {
-      // Por ahora solo mostramos los datos en consola
       const inspeccionData = {
         vehiculo_id: vehiculo.id,
         inspeccion_id : vehiculo.inspeccion_id,
