@@ -41,6 +41,8 @@ git --version
 ### 1. Clonar el repositorio
 ```bash
 git clone git@github.com:viniciusleon23/autocheckx_front.git
+
+cd autocheckx_front
 ```
 
 ### 2. Levantar el proyecto con Docker
@@ -166,10 +168,8 @@ ports:
 
 ### Problema: Permisos en Linux/Mac
 ```bash
-# Dar permisos al directorio
-sudo chown -R $USER:$USER .
 
-# O ejecutar Docker con sudo
+# ejecutar Docker con sudo
 sudo docker-compose up
 ```
 
